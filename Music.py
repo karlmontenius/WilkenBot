@@ -1,11 +1,9 @@
-from asyncpg import connect
 import discord
 from discord.ext import commands
 import youtube_dl
 from youtube_search import YoutubeSearch
 import json
 from dpymenus import Page, ButtonMenu
-from asyncio import sleep
 
 vc = []
 queue = []
@@ -89,5 +87,5 @@ class Music(commands.Cog, description="General commands, such as !slap, and !jok
         vc.resume()
 
 
-def setup(bot):
-    bot.add_cog(Music(bot))
+async def setup(bot):
+    await bot.add_cog(Music(bot))
