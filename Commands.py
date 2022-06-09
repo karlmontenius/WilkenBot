@@ -130,7 +130,68 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
         if isinstance(error, commands.CommandOnCooldown):
             remaining_time = str(datetime.timedelta(seconds=int(error.retry_after)))
             embed = discord.Embed(title=":clock1: Cooldown!", description=f'I just told a joke. I can tell one again in ' + str(remaining_time), color=0xE74C3C)
-            await ctx.send(embed=embed) 
-    
-def setup(bot):
-    bot.add_cog(Commands(bot))
+            await ctx.send(embed=embed)
+
+    #---------GIVE ROLES-------------------------------------------------------------------
+    @commands.command()
+    async def menu(self, ctx):
+        Overwatch = get(ctx.guild.roles, name="Overwatch")
+        League = get(ctx.guild.roles, name="League of Legends")
+        Elden = get(ctx.guild.roles, name="Elden Ring")
+        Arma = get(ctx.guild.roles, name="Arma Reforger")
+        class Select(discord.ui.Select):
+            def __init__(self):
+                options=[
+                    discord.SelectOption(label="League of Legends"),
+                    discord.SelectOption(label="Overwatch"),
+                    discord.SelectOption(label="Arma Reforger"),
+                    discord.SelectOption(label="Elden Ring")
+                    ]
+                super().__init__(placeholder="Select your role",max_values=1,min_values=1,options=options)
+
+            async def callback(self, interaction: discord.Interaction):
+                await interaction.response.send_message(content=f"You have selected {self.values[0]}!",ephemeral=True)
+                print(self.values[0])
+                user = interaction.user
+                if self.values[0] == "League of Legends":
+                    if Overwatch in user.roles:
+                        await user.remove_roles(League)
+                        print("Removed")
+                    else:
+                        await user.add_roles(League)
+                        print(user.roles)
+                        print("Added")
+                if self.values[0] == "Overwatch":
+                    if Overwatch in user.roles:
+                        await user.remove_roles(Overwatch)
+                        print("Removed")
+                    else:
+                        await user.add_roles(Overwatch)
+                        print(user.roles)
+                        print("Added OW")
+                if self.values[0] == "Elden Ring":
+                    if Elden in user.roles:
+                        await user.remove_roles(Elden)
+                        print("Removed")
+                    else:
+                        await user.add_roles(Elden)
+                        print(user.roles)
+                        print("Added")
+                if self.values[0] == "Arma Reforger":
+                    if Arma in user.roles:
+                        await user.remove_roles(Arma)
+                        print("Removed")
+                    else:
+                        await user.add_roles(Arma)
+                        print(user.roles)
+                        print("Added")
+
+        class SelectView(discord.ui.View):
+            def __init__(self, *, timeout = 180):
+                super().__init__(timeout=timeout)
+                self.add_item(Select())
+
+        await ctx.send("Choose your role!",view=SelectView())
+
+async def setup(bot):
+    await bot.add_cog(Commands(bot))
