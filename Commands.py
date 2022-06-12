@@ -48,11 +48,9 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
         self.bot = bot
         self._last_member = None
 
-
 #---------HUG-----------------------------------------------------------------------------------
     @commands.command(name='Hug', brief="Sends a hug to a user!")
     async def hug(self, ctx, *, member: discord.Member):
-        user = ctx.author
         choice = random.choice
         await ctx.send(file=File((choice(hug_list))))
     
@@ -139,52 +137,61 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
         League = get(ctx.guild.roles, name="League of Legends")
         Elden = get(ctx.guild.roles, name="Elden Ring")
         Arma = get(ctx.guild.roles, name="Arma Reforger")
+        CSGO = get(ctx.guild.roles, name="Counter Strike: Global Offensive")
         class Select(discord.ui.Select):
             def __init__(self):
                 options=[
                     discord.SelectOption(label="League of Legends"),
                     discord.SelectOption(label="Overwatch"),
                     discord.SelectOption(label="Arma Reforger"),
-                    discord.SelectOption(label="Elden Ring")
+                    discord.SelectOption(label="Elden Ring"),
+                    discord.SelectOption(label="Counter Strike: Global Offensive")
                     ]
                 super().__init__(placeholder="Select your role",max_values=1,min_values=1,options=options)
 
             async def callback(self, interaction: discord.Interaction):
-                await interaction.response.send_message(content=f"You have selected {self.values[0]}!",ephemeral=True)
-                print(self.values[0])
                 user = interaction.user
                 if self.values[0] == "League of Legends":
                     if Overwatch in user.roles:
                         await user.remove_roles(League)
-                        print("Removed")
+                        await interaction.response.send_message(content="Removed League of Legends!", ephemeral=True)
                     else:
                         await user.add_roles(League)
-                        print(user.roles)
-                        print("Added")
+                        await interaction.response.send_message(content="Added League of Legends!", ephemeral=True)
+
                 if self.values[0] == "Overwatch":
                     if Overwatch in user.roles:
                         await user.remove_roles(Overwatch)
-                        print("Removed")
+                        await interaction.response.send_message(content="Removed Overwatch!", ephemeral=True)
                     else:
                         await user.add_roles(Overwatch)
-                        print(user.roles)
-                        print("Added OW")
+                        await interaction.response.send_message(content="Added Overwatch!", ephemeral=True)
+
                 if self.values[0] == "Elden Ring":
                     if Elden in user.roles:
                         await user.remove_roles(Elden)
-                        print("Removed")
+                        await interaction.response.send_message(content="Removed Elden Ring!", ephemeral=True)
                     else:
                         await user.add_roles(Elden)
-                        print(user.roles)
-                        print("Added")
+                        await interaction.response.send_message(content="Added Elden Ring!", ephemeral=True)
+
                 if self.values[0] == "Arma Reforger":
                     if Arma in user.roles:
                         await user.remove_roles(Arma)
-                        print("Removed")
+                        await interaction.response.send_message(content="Removed Arma Reforger!", ephemeral=True)
                     else:
                         await user.add_roles(Arma)
-                        print(user.roles)
-                        print("Added")
+                        await interaction.response.send_message(content="Added Arma Reforger!", ephemeral=True)
+
+                if self.values[0] == "Counter Strike: Global Offensive":
+                    if CSGO in user.roles:
+                        await user.remove_roles(CSGO)
+                        await interaction.response.send_message(content="Removed Counter Strike: Global Offensive!", ephemeral=True)
+                    else:
+                        await user.add_roles(CSGO)
+                        await interaction.response.send_message(content="Added Counter Strike: Global Offensive!", ephemeral=True)
+                        
+                
 
         class SelectView(discord.ui.View):
             def __init__(self, *, timeout = 180):
@@ -193,62 +200,31 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
 
         await ctx.send("Choose your role!",view=SelectView())
 
-#----------------COLORS--------------------------------------------------------------------------------------------
-    @commands.command(name='Colors', brief="Gives you a menu to choose colors.")
-    async def colors(self, ctx):
-        class Buttons(discord.ui.View):
-                def __init__(self, *, timeout = 0):
-                    super().__init__(timeout=timeout)
-                    
-                @discord.ui.button(label = "Green", style=discord.ButtonStyle.gray, emoji="🟢", row = 1)
-                async def green(self, button:discord.ui.Button,interaction:discord.Interaction):
-                    user = interaction.user
-                    Green = get(ctx.guild.roles, name="Green")
-                    await user.add_roles(Green)
 
-                @discord.ui.button(label = "Orange", style=discord.ButtonStyle.gray, emoji="🟠", row = 1)
-                async def orange(self, button:discord.ui.Button,interaction:discord.Interaction):
-                    user = interaction.user
-                    Orange = get(ctx.guild.roles, name="Orange")
-                    await user.add_roles(Orange)
 
-                @discord.ui.button(label = "Purple", style=discord.ButtonStyle.gray, emoji="🟣", row = 1)
-                async def purple(self, button:discord.ui.Button,interaction:discord.Interaction):
-                    user = interaction.user
-                    Purple = get(ctx.guild.roles, name="Purple")
-                    await user.add_roles(Purple)
+#-----------------COLOR----------------------------------------------------------------------------------------------------------
+    # class my_color(discord.ui.Button):
+    #     def __init__(self, *, timeout=180):
+    #         super().__init__(timeout=timeout)
 
-                @discord.ui.button(label = "Yellow", style=discord.ButtonStyle.gray, emoji="🟡", row = 1)
-                async def yellow(self, button:discord.ui.Button,interaction:discord.Interaction):
-                    user = interaction.user
-                    Yellow = get(ctx.guild.roles, name="Yellow")
-                    await user.add_roles(Yellow)
+    #     async def callback(self, interaction: discord.Interaction):
+    #         print("test")
+    #         await interaction.response.send_message(content= "helloo")
 
-                @discord.ui.button(label = "Red", style=discord.ButtonStyle.gray, emoji="🔴", row = 2)
-                async def red(self,button:discord.ui.Button,interaction:discord.Interaction):
-                    user = interaction.user
-                    Red = get(ctx.guild.roles, name="Red")
-                    await user.add_roles(Red)
+    # @commands.command(name="colors", brief="Gives you a menu to choose your roles.")
+    # async def colors(self, ctx):
+    #     view = discord.ui.View()
+    #     view.add_item(my_color(label = "Green", style=discord.ButtonStyle.gray, emoji="🟢", row = 1, custom_id = "Green"))
+    #     view.add_item(my_color(label = "Orange", style=discord.ButtonStyle.gray, emoji="🟠", row = 1, custom_id = "Orange"))
+    #     view.add_item(my_color(label = "Purple", style=discord.ButtonStyle.gray, emoji="🟣", row = 1, custom_id = "Purple"))
+    #     view.add_item(my_color(label = "Yellow", style=discord.ButtonStyle.gray, emoji="🟡", row = 1, custom_id = "Yellow"))
+    #     view.add_item(my_color(label = "Red", style=discord.ButtonStyle.gray, emoji="🔴", row = 2, custom_id = "Red"))
+    #     view.add_item(my_color(label = "Blue", style=discord.ButtonStyle.gray, emoji="🔵", row = 2, custom_id = "Blue"))
+    #     view.add_item(my_color(label = "Teal", style=discord.ButtonStyle.gray, emoji="💠", row = 2, custom_id = "Teal"))
+    #     view.add_item(my_color(label = "Pink", style=discord.ButtonStyle.gray, emoji="💗", row = 2, custom_id = "Pink"))
+    #     await ctx.send("hello", view=view)
 
-                @discord.ui.button(label = "Blue", style=discord.ButtonStyle.gray, emoji="🔵", row = 2)
-                async def blue(self,button:discord.ui.Button,interaction:discord.Interaction):
-                    user = interaction.user
-                    Blue = get(ctx.guild.roles, name="Blue")
-                    await user.add_roles(Blue)
 
-                @discord.ui.button(label = "Teal", style=discord.ButtonStyle.gray, emoji="💠", row = 2)
-                async def teal(self,button:discord.ui.Button,interaction:discord.Interaction):
-                    user = interaction.user
-                    Teal = get(ctx.guild.roles, name="Teal")
-                    await user.add_roles(Teal)
-
-                @discord.ui.button(label = "Pink", style=discord.ButtonStyle.gray, emoji="💗", row = 2)
-                async def pink(self,button:discord.ui.Button,interaction:discord.Interaction):
-                    user = interaction.user
-                    Pink = get(ctx.guild.roles, name="Pink")
-                    await user.add_roles(Pink)
-
-        await ctx.send("Click any of the buttons to choose the color of your name!",view=Buttons())
 
 async def setup(bot):
     await bot.add_cog(Commands(bot))
