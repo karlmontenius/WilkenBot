@@ -5,6 +5,7 @@ from youtube_search import YoutubeSearch
 import json
 from dpymenus import Page, ButtonMenu
 import datetime
+import asyncio
 
 secs = 0
 songs = 0
@@ -15,12 +16,9 @@ class Music(commands.Cog, description="Commands that control the music from the 
     def __init__(self, bot):
         self.bot = bot
         self._last_member = None
-    @commands.command(name='Connect', aliases=["c"], brief="Makes the bot join vc")
-    async def connect(self, ctx):
-        channel = ctx.author.voice.channel
-        global vc
-        if channel != None:
-            vc = await channel.connect()
+
+
+
 
     @commands.command(name='Play', brief="Search for the song that you want to play.")
     async def play(self, ctx, keyword):
@@ -41,11 +39,10 @@ class Music(commands.Cog, description="Commands that control the music from the 
         parsedTitle3 = parsedJson["videos"][2]["title"]
         parsedDuration3 = parsedJson["videos"][2]["duration"]
 
+
         async def playmusic(self, ctx, url, duration):
             YDL_OPTIONS = {'format': 'bestaudio/best', 'noplaylist':'True'}
             FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
-            global vc
-            global queue
             with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
                 info = ydl.extract_info(url, download=False)
                 I_URL = info['formats'][0]['url']
@@ -70,42 +67,99 @@ class Music(commands.Cog, description="Commands that control the music from the 
                     embedq.set_footer(text=f"Command run by: {ctx.author}")
                     print(queue)
                     await ctx.send(embed=embedq)
+                    await msg.delete()
                 else:
+                    durationsecs = 2
+                    durationsecs += sum(int(x) * 60 ** i for i, x in enumerate(reversed(duration.split(':'))))
                     vc.play(source)
                     vc.is_playing()
                     await ctx.send(embed=embed)
+                    await waitforsong(self, ctx, duration)
 
-        async def first(menu):
-            if menu.button_pressed(one):
-                await menu.close()
+        embedsong = discord.Embed(title='Song results | Music', description='Which song do you want to play?')
+        embedsong.add_field(name="1 - " + parsedTitle1, value=parsedDuration1, inline=False)
+        embedsong.add_field(name="2 - " + parsedTitle2, value=parsedDuration2, inline=False)
+        embedsong.add_field(name="3 - " + parsedTitle3, value=parsedDuration3, inline=False)
+
+        class Buttons(discord.ui.View):
+            def __init__(self, *, timeout = 180):
+                super().__init__(timeout=timeout)
+            @discord.ui.button(style=discord.ButtonStyle.gray,emoji="1️⃣", custom_id="1")
+            async def one(self,button:discord.ui.Button,interaction:discord.Interaction):
                 url = "https://youtube.com" + parsedUrl1
                 duration = parsedDuration1
                 await playmusic(self, ctx, url, duration)
 
-            if menu.button_pressed(two):
-                await menu.close()
+            @discord.ui.button(style=discord.ButtonStyle.gray,emoji="2️⃣", custom_id="2")
+            async def two(self,button:discord.ui.Button,interaction:discord.Interaction):
                 url = "https://youtube.com" + parsedUrl2
                 duration = parsedDuration2
                 await playmusic(self, ctx, url, duration)
 
-            if menu.button_pressed(stop):
-                await menu.close()
-
-            elif menu.button_pressed(three):
-                await menu.close()
+            @discord.ui.button(style=discord.ButtonStyle.gray,emoji="3️⃣", custom_id="3")
+            async def three(self,button:discord.ui.Button,interaction:discord.Interaction):
                 url = "https://youtube.com" + parsedUrl3
                 duration = parsedDuration3
                 await playmusic(self, ctx, url, duration)
 
-        page1 = Page(title='Song results | Music', description='Which song do you want to play?')
-        page1.add_field(name="1 - " + parsedTitle1, value=parsedDuration1, inline=False)
-        page1.add_field(name="2 - " + parsedTitle2, value=parsedDuration2, inline=False)
-        page1.add_field(name="3 - " + parsedTitle3, value=parsedDuration3, inline=False)
-        page1.buttons([one, two, three, stop]).on_next(first)
-        menu = ButtonMenu(ctx)
-        menu.add_pages([page1])
-        await menu.open()
+            @discord.ui.button(style=discord.ButtonStyle.gray,emoji="❌", custom_id="4")
+            async def four(self,button:discord.ui.Button,interaction:discord.Interaction):
+                await msg.delete()
 
+        msg = await ctx.send(embed=embedsong ,view=Buttons())
+
+
+        # async def first(menu):
+        #     if menu.button_pressed(one):
+        #         await menu.close()
+        #         url = "https://youtube.com" + parsedUrl1
+        #         duration = parsedDuration1
+        #         await playmusic(self, ctx, url, duration)
+
+        #     if menu.button_pressed(two):
+        #         await menu.close()
+        #         url = "https://youtube.com" + parsedUrl2
+        #         duration = parsedDuration2
+        #         await playmusic(self, ctx, url, duration)
+
+        #     if menu.button_pressed(stop):
+        #         await menu.close()
+
+        #     elif menu.button_pressed(three):
+        #         await menu.close()
+        #         url = "https://youtube.com" + parsedUrl3
+        #         duration = parsedDuration3
+        #         await playmusic(self, ctx, url, duration)
+
+        # page1 = Page(title='Song results | Music', description='Which song do you want to play?')
+        # page1.add_field(name="1 - " + parsedTitle1, value=parsedDuration1, inline=False)
+        # page1.add_field(name="2 - " + parsedTitle2, value=parsedDuration2, inline=False)
+        # page1.add_field(name="3 - " + parsedTitle3, value=parsedDuration3, inline=False)
+        # page1.buttons([one, two, three, stop]).on_next(first)
+        # menu = ButtonMenu(ctx)
+        # menu.add_pages([page1])
+        # await menu.open()
+
+        async def waitforsong(self, ctx, duration):
+            durationsecs = 2
+            durationsecs += sum(int(x) * 60 ** i for i, x in enumerate(reversed(duration.split(':'))))
+            await msg.delete()
+            await asyncio.sleep(durationsecs)
+            await playnextsong(self, ctx, duration)
+
+        async def playnextsong(self, ctx, duration):
+            FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+            source = await discord.FFmpegOpusAudio.from_probe(queue[0], **FFMPEG_OPTIONS)
+            durationsecs = 2
+            durationsecs += sum(int(x) * 60 ** i for i, x in enumerate(reversed(duration.split(':'))))
+            del queue[0]
+            vc.play(source)
+            vc.is_playing()
+            await waitforsong(self, ctx, duration)
+    @play.error
+    async def on_command_error(self, ctx, error):
+        if isinstance(error, FileNotFoundError):
+            pass
     @commands.command(name='Pause', aliases=["p"], brief="Pauses music in vc.")
     async def pause(self, ctx):
         global vc
@@ -117,6 +171,16 @@ class Music(commands.Cog, description="Commands that control the music from the 
         global vc
         vc.resume()
         vc.is_playing()
+    @commands.command(name='Connect', aliases=["c"], brief="Makes the bot join vc")
+    async def connect(self, ctx):
+        channel = ctx.author.voice.channel
+        global vc
+        if channel != None:
+            vc = await channel.connect()
+    @connect.error
+    async def on_command_error(self, ctx, error):
+        if isinstance(error, commands.errors.CommandInvokeError):
+            await ctx.send("You must be connected to a voice channel before using this command!")
 
     @commands.command(name='Disconnect',aliases=["dc"], brief="Disconnects the bot from current vc.")
     async def disconnect(self, ctx):
@@ -133,6 +197,12 @@ class Music(commands.Cog, description="Commands that control the music from the 
         vc.play(source)
         vc.is_playing()
         await ctx.send("Skipped current song, playing next song in queue.")
+    @skip.error
+    async def skip_error(self, ctx, error):
+        if isinstance(error, commands.errors.CommandInvokeError):
+            global songs
+            await ctx.send("Skipped current song, but there are currently no songs in queue.")
+                        
 
 async def setup(bot):
     await bot.add_cog(Music(bot))
