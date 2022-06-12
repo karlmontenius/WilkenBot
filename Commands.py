@@ -248,7 +248,7 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
                     Pink = get(ctx.guild.roles, name="Pink")
                     await user.add_roles(Pink)
 
-        await ctx.send("",view=Buttons())
+        await ctx.send("Click any of the buttons to choose the color of your name!",view=Buttons())
 
 async def setup(bot):
     await bot.add_cog(Commands(bot))
