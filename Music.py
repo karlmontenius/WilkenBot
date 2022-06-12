@@ -118,12 +118,12 @@ class Music(commands.Cog, description="Commands that control the music from the 
         vc.resume()
         vc.is_playing()
 
-    @commands.command(name='disconnect',aliases=["dc"], brief="Disconnects the bot from current vc.")
+    @commands.command(name='Disconnect',aliases=["dc"], brief="Disconnects the bot from current vc.")
     async def disconnect(self, ctx):
         global vc
         await vc.disconnect()
 
-    @commands.command(name='skip',aliases=["s"], brief="Skips the current song playing.")
+    @commands.command(name='Skip',aliases=["s"], brief="Skips the current song playing.")
     async def skip(self, ctx):
         global vc
         vc.stop()
