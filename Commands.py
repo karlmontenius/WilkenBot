@@ -133,8 +133,8 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
             await ctx.send(embed=embed)
 
     #---------GIVE ROLES-------------------------------------------------------------------
-    @commands.command()
-    async def menu(self, ctx):
+    @commands.command(name='Roles', brief="Gives you a menu to choose your roles.")
+    async def roles(self, ctx):
         Overwatch = get(ctx.guild.roles, name="Overwatch")
         League = get(ctx.guild.roles, name="League of Legends")
         Elden = get(ctx.guild.roles, name="Elden Ring")
