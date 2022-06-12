@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 import asyncio
-#from pretty_help import DefaultMenu, PrettyHelp
 
 #--------------DEFINITIONS-------------------------------------------------------------
 intents = discord.Intents.all()
@@ -10,8 +9,6 @@ bot.owner_ids = [238834157181075456]
 startup_extensions = ["Commands",
                       "Music"]
 
-# menu = DefaultMenu('◀️', '▶️', '❌')
-# bot.help_command = PrettyHelp(navigation=menu, color=discord.Colour.green()) 
 #-------------------READY------------------------------------------------------------------------------------------
 async def loader():
     if __name__ == "__main__":

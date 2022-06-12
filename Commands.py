@@ -193,5 +193,62 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
 
         await ctx.send("Choose your role!",view=SelectView())
 
+#----------------COLORS--------------------------------------------------------------------------------------------
+    @commands.command(name='Colors', brief="Gives you a menu to choose colors.")
+    async def colors(self, ctx):
+        class Buttons(discord.ui.View):
+                def __init__(self, *, timeout = 0):
+                    super().__init__(timeout=timeout)
+                    
+                @discord.ui.button(label = "Green", style=discord.ButtonStyle.gray, emoji="🟢", row = 1)
+                async def green(self, button:discord.ui.Button,interaction:discord.Interaction):
+                    user = interaction.user
+                    Green = get(ctx.guild.roles, name="Green")
+                    await user.add_roles(Green)
+
+                @discord.ui.button(label = "Orange", style=discord.ButtonStyle.gray, emoji="🟠", row = 1)
+                async def orange(self, button:discord.ui.Button,interaction:discord.Interaction):
+                    user = interaction.user
+                    Orange = get(ctx.guild.roles, name="Orange")
+                    await user.add_roles(Orange)
+
+                @discord.ui.button(label = "Purple", style=discord.ButtonStyle.gray, emoji="🟣", row = 1)
+                async def purple(self, button:discord.ui.Button,interaction:discord.Interaction):
+                    user = interaction.user
+                    Purple = get(ctx.guild.roles, name="Purple")
+                    await user.add_roles(Purple)
+
+                @discord.ui.button(label = "Yellow", style=discord.ButtonStyle.gray, emoji="🟡", row = 1)
+                async def yellow(self, button:discord.ui.Button,interaction:discord.Interaction):
+                    user = interaction.user
+                    Yellow = get(ctx.guild.roles, name="Yellow")
+                    await user.add_roles(Yellow)
+
+                @discord.ui.button(label = "Red", style=discord.ButtonStyle.gray, emoji="🔴", row = 2)
+                async def red(self,button:discord.ui.Button,interaction:discord.Interaction):
+                    user = interaction.user
+                    Red = get(ctx.guild.roles, name="Red")
+                    await user.add_roles(Red)
+
+                @discord.ui.button(label = "Blue", style=discord.ButtonStyle.gray, emoji="🔵", row = 2)
+                async def blue(self,button:discord.ui.Button,interaction:discord.Interaction):
+                    user = interaction.user
+                    Blue = get(ctx.guild.roles, name="Blue")
+                    await user.add_roles(Blue)
+
+                @discord.ui.button(label = "Teal", style=discord.ButtonStyle.gray, emoji="💠", row = 2)
+                async def teal(self,button:discord.ui.Button,interaction:discord.Interaction):
+                    user = interaction.user
+                    Teal = get(ctx.guild.roles, name="Teal")
+                    await user.add_roles(Teal)
+
+                @discord.ui.button(label = "Pink", style=discord.ButtonStyle.gray, emoji="💗", row = 2)
+                async def pink(self,button:discord.ui.Button,interaction:discord.Interaction):
+                    user = interaction.user
+                    Pink = get(ctx.guild.roles, name="Pink")
+                    await user.add_roles(Pink)
+
+        await ctx.send("",view=Buttons())
+
 async def setup(bot):
     await bot.add_cog(Commands(bot))
