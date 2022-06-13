@@ -158,18 +158,24 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
             embed = discord.Embed(title=":clock1: Cooldown!", description=f"I just told a joke. I can tell one again in " + str(remaining_time), color=0xE74C3C)
             await ctx.send(embed=embed)
 
-    #---------GIVE ROLES-------------------------------------------------------------------
-    @commands.command(name="Rolemenu", brief="Gives you a menu to choose your roles.")
+    #---------GAMES-------------------------------------------------------------------
+    @commands.command(name="Gamesmenu", brief="Sends a menu to choose your games in #get-your-roles.")
     @commands.has_any_role("admin")
-    async def rolemenu(self, ctx):
-        await Roles.roles(self, ctx)
+    async def gamesmenu(self, ctx):
+        await Roles.games(self, ctx)
 
 
-#-----------------COLOR----------------------------------------------------------------------------------------------------------
-    @commands.command(name="colorsmenu", brief="Gives you a menu to choose your roles.")
+    #-----------------COLORS----------------------------------------------------------------------------------------------------------
+    @commands.command(name="colorsmenu", brief="Sends a menu to choose colors in #colors.")
     @commands.has_any_role("admin")
     async def colorsmenu(self, ctx):
-        await Roles.colors(self, ctx)            
+        await Roles.colors(self, ctx) 
+
+    #---------GAMES-------------------------------------------------------------------
+    @commands.command(name="intmenu", brief="Sends a menu to choose your interests in #get-your-roles.")
+    @commands.has_any_role("admin")
+    async def intmenu(self, ctx):
+        await Roles.interests(self, ctx)     
 
 async def setup(bot):
     await bot.add_cog(Commands(bot))

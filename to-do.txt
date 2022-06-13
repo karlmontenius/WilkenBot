@@ -7,3 +7,8 @@ improve color menu:
         await user.remove_roles(currentRoles)
         print(userRoles)
 
+SteamAPI to get library
+
+Games
+
+Interests

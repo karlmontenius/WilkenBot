@@ -8,72 +8,260 @@ class Roles(commands.Cog, description="Supportive cog for roles."):
         self._last_member = None
 
 #---------------------------------------------------------------------------------------------------------------------------
-    async def roles(self, ctx):
+    async def games(self, ctx):
         Overwatch = get(ctx.guild.roles, name="Overwatch")
         League = get(ctx.guild.roles, name="League of Legends")
         Elden = get(ctx.guild.roles, name="Elden Ring")
         Arma = get(ctx.guild.roles, name="Arma Reforger")
         CSGO = get(ctx.guild.roles, name="Counter Strike: Global Offensive")
+        Valorant = get(ctx.guild.roles, name="Valorant")
+        Squad = get(ctx.guild.roles, name="Squad")
+        CrusaderKings = get(ctx.guild.roles, name="Crusader Kings")
+        RocketLeague = get(ctx.guild.roles, name="Rocket League")
+        HumanFallFlat = get(ctx.guild.roles, name="Human Fall Flat")
+        WarThunder = get(ctx.guild.roles, name="War Thunder")
+        Battlefield = get(ctx.guild.roles, name="Battlefield")
         channel = get(ctx.guild.text_channels, name="get-your-roles")
-        class Select(discord.ui.Select):
-            def __init__(self):
-                options=[
-                    discord.SelectOption(label="League of Legends"),
-                    discord.SelectOption(label="Overwatch"),
-                    discord.SelectOption(label="Arma Reforger"),
-                    discord.SelectOption(label="Elden Ring"),
-                    discord.SelectOption(label="Counter Strike: Global Offensive")
-                    ]
-                super().__init__(placeholder="Select your roles!",max_values=1,min_values=1,options=options)
 
-            async def callback(self, interaction: discord.Interaction):
+        class my_games(discord.ui.View):
+            @discord.ui.button(label = "Overwatch", style=discord.ButtonStyle.gray, custom_id = "Overwatch")
+            async def Overwatch(self, interaction: discord.Interaction, button: discord.ui.Button):
                 user = interaction.user
-                if self.values[0] == "League of Legends":
-                    if Overwatch in user.roles:
-                        await user.remove_roles(League)
-                        await interaction.response.send_message(content="Removed League of Legends!", ephemeral=True)
-                    else:
-                        await user.add_roles(League)
-                        await interaction.response.send_message(content="Added League of Legends!", ephemeral=True)
+                userRoles = interaction.user.roles
+                if Overwatch in userRoles:
+                    await user.remove_roles(Overwatch)
+                    await interaction.response.send_message("Removed Overwatch!", ephemeral=True)
+                else:
+                    await user.add_roles(Overwatch)
+                    await interaction.response.send_message("Added Overwatch!", ephemeral=True)
 
-                if self.values[0] == "Overwatch":
-                    if Overwatch in user.roles:
-                        await user.remove_roles(Overwatch)
-                        await interaction.response.send_message(content="Removed Overwatch!", ephemeral=True)
-                    else:
-                        await user.add_roles(Overwatch)
-                        await interaction.response.send_message(content="Added Overwatch!", ephemeral=True)
+            @discord.ui.button(label = "League of Legends", style=discord.ButtonStyle.gray, custom_id = "Orange")
+            async def League(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if League in userRoles:
+                    await user.remove_roles(League)
+                    await interaction.response.send_message("Removed League of Legends!", ephemeral=True)
+                else:
+                    await user.add_roles(League)
+                    await interaction.response.send_message("Added League of Legends!", ephemeral=True)
 
-                if self.values[0] == "Elden Ring":
-                    if Elden in user.roles:
-                        await user.remove_roles(Elden)
-                        await interaction.response.send_message(content="Removed Elden Ring!", ephemeral=True)
-                    else:
-                        await user.add_roles(Elden)
-                        await interaction.response.send_message(content="Added Elden Ring!", ephemeral=True)
+            @discord.ui.button(label = "Elden Ring", style=discord.ButtonStyle.gray, custom_id = "Elden Ring")
+            async def Elden(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if Elden in userRoles:
+                    await user.remove_roles(Elden)
+                    await interaction.response.send_message("Removed Elden Ring!", ephemeral=True)
+                else:
+                    await user.add_roles(Elden)
+                    await interaction.response.send_message("Added Elden Ring!", ephemeral=True)
 
-                if self.values[0] == "Arma Reforger":
-                    if Arma in user.roles:
-                        await user.remove_roles(Arma)
-                        await interaction.response.send_message(content="Removed Arma Reforger!", ephemeral=True)
-                    else:
-                        await user.add_roles(Arma)
-                        await interaction.response.send_message(content="Added Arma Reforger!", ephemeral=True)
+            @discord.ui.button(label = "Arma Reforger", style=discord.ButtonStyle.gray, custom_id = "Arma Reforger")
+            async def Arma(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if Arma in userRoles:
+                    await user.remove_roles(Arma)
+                    await interaction.response.send_message("Removed Arma Reforger!", ephemeral=True)
+                else:
+                    await user.add_roles(Arma)
+                    await interaction.response.send_message("Added Arma Reforger!", ephemeral=True)
 
-                if self.values[0] == "Counter Strike: Global Offensive":
-                    if CSGO in user.roles:
-                        await user.remove_roles(CSGO)
-                        await interaction.response.send_message(content="Removed Counter Strike: Global Offensive!", ephemeral=True)
-                    else:
-                        await user.add_roles(CSGO)
-                        await interaction.response.send_message(content="Added Counter Strike: Global Offensive!", ephemeral=True)
-                         
-        class SelectView(discord.ui.View):
-            def __init__(self, *, timeout=180):
-                super().__init__(timeout=timeout)
-                self.add_item(Select())
+            @discord.ui.button(label = "Counter Strike: Global Offensive", style=discord.ButtonStyle.gray, row = 2, custom_id = "Counter Strike: Global Offensive")
+            async def CSGO(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                CSGO = get(ctx.guild.roles, name="Counter Strike: Global Offensive")
+                userRoles = interaction.user.roles
+                if CSGO in userRoles:
+                    await user.remove_roles(CSGO)
+                    await interaction.response.send_message("Removed Counter Strike: Global Offensive!", ephemeral=True)
+                else:
+                    await user.add_roles(CSGO)
+                    await interaction.response.send_message("Added Counter Strike: Global Offensive!", ephemeral=True)
 
-        await channel.send(content="Choose your role!",view=SelectView())
+            @discord.ui.button(label = "Valorant", style=discord.ButtonStyle.gray, custom_id = "Valorant")
+            async def Valorant(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if Valorant in userRoles:
+                    await user.remove_roles(Valorant)
+                    await interaction.response.send_message("Removed Valorant!", ephemeral=True)
+                else:
+                    await user.add_roles(Valorant)
+                    await interaction.response.send_message("Added Valorant!", ephemeral=True)
+
+            @discord.ui.button(label = "Squad", style=discord.ButtonStyle.gray, custom_id = "Squad")
+            async def Squad(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if Squad in userRoles:
+                    await user.remove_roles(Squad)
+                    await interaction.response.send_message("Removed Squad!", ephemeral=True)
+                else:
+                    await user.add_roles(Squad)
+                    await interaction.response.send_message("Added Squad!", ephemeral=True)
+
+            @discord.ui.button(label = "Crusader Kings", style=discord.ButtonStyle.gray, custom_id = "CrusaderKings")
+            async def CrusaderKings(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if CrusaderKings in userRoles:
+                    await user.remove_roles(CrusaderKings)
+                    await interaction.response.send_message("Removed Crusader Kings!", ephemeral=True)
+                else:
+                    await user.add_roles(CrusaderKings)
+                    await interaction.response.send_message("Added Crusader Kings!", ephemeral=True)
+                    
+            @discord.ui.button(label = "Rocket League", style=discord.ButtonStyle.gray, custom_id = "RocketLeague")
+            async def RocketLeague(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if RocketLeague in userRoles:
+                    await user.remove_roles(RocketLeague)
+                    await interaction.response.send_message("Removed Rocket League!", ephemeral=True)
+                else:
+                    await user.add_roles(RocketLeague)
+                    await interaction.response.send_message("Added Rocket League!", ephemeral=True)
+
+            @discord.ui.button(label = "Human Fall Flat", style=discord.ButtonStyle.gray, custom_id = "HumanFallFlat")
+            async def HumanFallFlat(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if HumanFallFlat in userRoles:
+                    await user.remove_roles(HumanFallFlat)
+                    await interaction.response.send_message("Removed Human Fall Flat!", ephemeral=True)
+                else:
+                    await user.add_roles(HumanFallFlat)
+                    await interaction.response.send_message("Added Human Fall Flat!", ephemeral=True)
+
+            @discord.ui.button(label = "War Thunder", style=discord.ButtonStyle.gray, custom_id = "War Thunder")
+            async def WarThunder(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if WarThunder in userRoles:
+                    await user.remove_roles(WarThunder)
+                    await interaction.response.send_message("Removed War Thunder!", ephemeral=True)
+                else:
+                    await user.add_roles(WarThunder)
+                    await interaction.response.send_message("Added War Thunder!", ephemeral=True)
+
+            @discord.ui.button(label = "Battlefield", style=discord.ButtonStyle.gray, custom_id = "Battlefield")
+            async def Battlefield(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if Battlefield in userRoles:
+                    await user.remove_roles(Battlefield)
+                    await interaction.response.send_message("Removed Battlefield!", ephemeral=True)
+                else:
+                    await user.add_roles(Battlefield)
+                    await interaction.response.send_message("Added Battlefield!", ephemeral=True)
+
+        await channel.send(content="Choose which games you play!",view=my_games())
+
+#---------------------------------------------------------------------------------------------------------------------------
+    async def interests(self, ctx):
+        DnD = get(ctx.guild.roles, name="DnD")
+        Anime = get(ctx.guild.roles, name="Anime")
+        Fitness = get(ctx.guild.roles, name="Fitness")
+        Finance = get(ctx.guild.roles, name="Finance")
+        Pets = get(ctx.guild.roles, name="Pets")
+        Voyeur = get(ctx.guild.roles, name="Voyeur")
+        Gaming = get(ctx.guild.roles, name="Gaming")
+        Techie = get(ctx.guild.roles, name="Techie")
+        channel = get(ctx.guild.text_channels, name="get-your-roles")
+        class my_interests(discord.ui.View):
+            @discord.ui.button(label = "DnD", style=discord.ButtonStyle.gray, custom_id = "DnD")
+            async def DnD(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if DnD in userRoles:
+                    await user.remove_roles(DnD)
+                    await interaction.response.send_message("Removed DnD!", ephemeral=True)
+                else:
+                    await user.add_roles(DnD)
+                    await interaction.response.send_message("Added DnD!", ephemeral=True)
+
+            @discord.ui.button(label = "Anime", style=discord.ButtonStyle.gray, custom_id = "Anime")
+            async def Anime(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if Anime in userRoles:
+                    await user.remove_roles(Anime)
+                    await interaction.response.send_message("Removed Anime!", ephemeral=True)
+                else:
+                    await user.add_roles(Anime)
+                    await interaction.response.send_message("Added Anime!", ephemeral=True)
+
+            @discord.ui.button(label = "Fitness", style=discord.ButtonStyle.gray, custom_id = "Fitness")
+            async def Fitness(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if Fitness in userRoles:
+                    await user.remove_roles(Fitness)
+                    await interaction.response.send_message("Removed Fitness!", ephemeral=True)
+                else:
+                    await user.add_roles(Fitness)
+                    await interaction.response.send_message("Added Fitness!", ephemeral=True)
+
+            @discord.ui.button(label = "Finance", style=discord.ButtonStyle.gray, custom_id = "Finance")
+            async def Finance(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if Finance in userRoles:
+                    await user.remove_roles(Finance)
+                    await interaction.response.send_message("Removed Finance!", ephemeral=True)
+                else:
+                    await user.add_roles(Finance)
+                    await interaction.response.send_message("Added Finance!", ephemeral=True)
+
+            @discord.ui.button(label = "Pets", style=discord.ButtonStyle.gray, custom_id = "Pets")
+            async def Pets(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if Pets in userRoles:
+                    await user.remove_roles(Pets)
+                    await interaction.response.send_message("Removed Pets!", ephemeral=True)
+                else:
+                    await user.add_roles(Pets)
+                    await interaction.response.send_message("Added Pets!", ephemeral=True)
+
+            @discord.ui.button(label = "Voyeur", style=discord.ButtonStyle.gray, custom_id = "Voyeur")
+            async def Voyeur(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if Voyeur in userRoles:
+                    await user.remove_roles(Voyeur)
+                    await interaction.response.send_message("Removed Voyeur!", ephemeral=True)
+                else:
+                    await user.add_roles(Voyeur)
+                    await interaction.response.send_message("Added Voyeur!", ephemeral=True)
+
+            @discord.ui.button(label = "Gaming", style=discord.ButtonStyle.gray, custom_id = "Gaming")
+            async def Gaming(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if Gaming in userRoles:
+                    await user.remove_roles(Gaming)
+                    await interaction.response.send_message("Removed Gaming!", ephemeral=True)
+                else:
+                    await user.add_roles(Gaming)
+                    await interaction.response.send_message("Added Gaming!", ephemeral=True)
+
+            @discord.ui.button(label = "Techie", style=discord.ButtonStyle.gray, custom_id = "Techie")
+            async def Techie(self, interaction: discord.Interaction, button: discord.ui.Button):
+                user = interaction.user
+                userRoles = interaction.user.roles
+                if Techie in userRoles:
+                    await user.remove_roles(Techie)
+                    await interaction.response.send_message("Removed Techie!", ephemeral=True)
+                else:
+                    await user.add_roles(Techie)
+                    await interaction.response.send_message("Added Techie!", ephemeral=True)
+                    
+
+        await channel.send(content="Choose your interests!",view=my_interests())
+
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------
     async def colors(self, ctx):
@@ -177,7 +365,5 @@ class Roles(commands.Cog, description="Supportive cog for roles."):
 
         await channel.send(content="Choose the color of your name!\nClick the button again to remove the color.",view=colorView())
 
-
-        
 async def setup(bot):
     await bot.add_cog(Roles(bot))
