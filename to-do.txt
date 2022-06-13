@@ -1,1 +1,9 @@
 color roles giver thing - done
+
+
+improve color menu:
+    for role in userRoles:
+        currentRoles = discord.utils.find(lambda r: r.name in colors, userRoles)
+        await user.remove_roles(currentRoles)
+        print(userRoles)
+
