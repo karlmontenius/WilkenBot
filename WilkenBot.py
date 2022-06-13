@@ -8,7 +8,8 @@ bot = commands.Bot(command_prefix="!", case_insensitive=True, intents=intents)
 bot.owner_ids = [238834157181075456]
 startup_extensions = ["Music",
                       "Commands",
-                      "Functions"]
+                      "Functions",
+                      "Roles"]
 #-------------------READY------------------------------------------------------------------------------------------
 async def loader():
     if __name__ == "__main__":
