@@ -49,7 +49,7 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
         self._last_member = None
 
 #---------HUG-----------------------------------------------------------------------------------
-    @commands.command(name='Hug', brief="Sends a hug to a user!")
+    @commands.command(name="Hug", brief="Sends a hug to a user!")
     async def hug(self, ctx, *, member: discord.Member):
         choice = random.choice
         await ctx.send(file=File((choice(hug_list))))
@@ -60,7 +60,7 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
             await ctx.send("You need to specify who to hug!")
     
     #---------SLAP-------------------------------------------------------------------------------
-    @commands.command(name='Slap', brief='Slap the mentioned user!')
+    @commands.command(name="Slap", brief="Slap the mentioned user!")
     async def slap(self, ctx, *, member: discord.Member):
         choice = random.choice
         await ctx.send(file=File((choice(slap_list))))
@@ -71,7 +71,7 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
             await ctx.send("You need to specify who to slap!")
     
     #---------ROLL-------------------------------------------------------------------------------
-    @commands.command(name='Roll', brief='Rolls a random number between 1-100')
+    @commands.command(name="Roll", brief="Rolls a random number between 1-100")
     async def roll(self, ctx):
         choice = random.choice
         number = choice(range(101))
@@ -79,7 +79,7 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
         await ctx.send(embed=embed)
     
     #---------FLIP-------------------------------------------------------------------------------
-    @commands.command(name='Flip', brief="Flips a coin resulting in heads or tails.")
+    @commands.command(name="Flip", brief="Flips a coin resulting in heads or tails.")
     async def coinflip(self, ctx):
         choice = random.choice
         determine_flip = [1, 0]
@@ -92,8 +92,8 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
             await ctx.send(embed=embed)
     
     #----------PURGE-------------------------------------------------------------------------------
-    @commands.command(name='Purge', brief="Removes all messages sent by the userID provided.")
-    @commands.has_any_role('Admin', 'Mod', 'Senior Mod')
+    @commands.command(name="Purge", brief="Removes all messages sent by the userID provided.")
+    @commands.has_any_role("admin")
     async def purge(self, ctx, member: discord.Member):
         msg = []
         counter = 0
@@ -103,7 +103,7 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
                     msg.append(message)
                     counter += 1
                     await message.delete()
-        await ctx.send(f'Deleted **{counter}** messages in this server.{ctx.author.mention}')
+        await ctx.send(f"Deleted **{counter}** messages in this server from {member}.{ctx.author.mention}")
     
     @purge.error
     async def purgemember_error(self, ctx, error):
@@ -114,11 +114,29 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
     async def purgerank_error(self, ctx, error):
         if isinstance(error, commands.errors.MissingAnyRole):
             await ctx.send("You are not authorized to use this command!")
+
+    #----------PURGE-CHANNEL------------------------------------------------------------------------------
+    @commands.command(name="Purgech", brief="Removes all messages sent by the userID provided.")
+    @commands.has_any_role("admin")
+    async def purgech(self, ctx):
+        msg = []
+        counter = 0
+        channel = ctx.channel
+        async for message in channel.history(limit = 100):
+            msg.append(message)
+            counter += 1
+            await message.delete()
+        await ctx.send(f"{ctx.author.mention} Deleted **{counter}** messages in this channel.", delete_after = 10)
     
+    
+    @purge.error
+    async def purgerank_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingAnyRole):
+            await ctx.send("You are not authorized to use this command!", delete_after = 10)
     
     #----------JOKE--------------------------------------------------------------
     @commands.cooldown(1, 90, commands.BucketType.guild)
-    @commands.command(name='Joke', brief='Tells a random joke.')
+    @commands.command(name="Joke", brief="Tells a random joke.")
     async def joke(self, ctx,):
         joke = random.choice(jokes)
         await ctx.send(f"{joke}")
@@ -127,17 +145,18 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             remaining_time = str(datetime.timedelta(seconds=int(error.retry_after)))
-            embed = discord.Embed(title=":clock1: Cooldown!", description=f'I just told a joke. I can tell one again in ' + str(remaining_time), color=0xE74C3C)
+            embed = discord.Embed(title=":clock1: Cooldown!", description=f"I just told a joke. I can tell one again in " + str(remaining_time), color=0xE74C3C)
             await ctx.send(embed=embed)
 
     #---------GIVE ROLES-------------------------------------------------------------------
-    @commands.command(name='Roles', brief="Gives you a menu to choose your roles.")
+    @commands.command(name="Roles", brief="Gives you a menu to choose your roles.")
     async def roles(self, ctx):
         Overwatch = get(ctx.guild.roles, name="Overwatch")
         League = get(ctx.guild.roles, name="League of Legends")
         Elden = get(ctx.guild.roles, name="Elden Ring")
         Arma = get(ctx.guild.roles, name="Arma Reforger")
         CSGO = get(ctx.guild.roles, name="Counter Strike: Global Offensive")
+        channel = get(ctx.guild.text_channels, name="get-your-roles")
         class Select(discord.ui.Select):
             def __init__(self):
                 options=[
@@ -147,7 +166,7 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
                     discord.SelectOption(label="Elden Ring"),
                     discord.SelectOption(label="Counter Strike: Global Offensive")
                     ]
-                super().__init__(placeholder="Select your role",max_values=1,min_values=1,options=options)
+                super().__init__(placeholder="Select your roles!",max_values=1,min_values=1,options=options)
 
             async def callback(self, interaction: discord.Interaction):
                 user = interaction.user
@@ -190,39 +209,47 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
                     else:
                         await user.add_roles(CSGO)
                         await interaction.response.send_message(content="Added Counter Strike: Global Offensive!", ephemeral=True)
-                        
-                
+                         
 
         class SelectView(discord.ui.View):
-            def __init__(self, *, timeout = 180):
+            def __init__(self, *, timeout=180):
                 super().__init__(timeout=timeout)
                 self.add_item(Select())
 
-        await ctx.send("Choose your role!",view=SelectView())
+        await channel.send(content="Choose your role!",view=SelectView())
 
 
 
 #-----------------COLOR----------------------------------------------------------------------------------------------------------
-    # class my_color(discord.ui.Button):
-    #     def __init__(self, *, timeout=180):
-    #         super().__init__(timeout=timeout)
-
-    #     async def callback(self, interaction: discord.Interaction):
-    #         print("test")
-    #         await interaction.response.send_message(content= "helloo")
-
-    # @commands.command(name="colors", brief="Gives you a menu to choose your roles.")
-    # async def colors(self, ctx):
-    #     view = discord.ui.View()
-    #     view.add_item(my_color(label = "Green", style=discord.ButtonStyle.gray, emoji="🟢", row = 1, custom_id = "Green"))
-    #     view.add_item(my_color(label = "Orange", style=discord.ButtonStyle.gray, emoji="🟠", row = 1, custom_id = "Orange"))
-    #     view.add_item(my_color(label = "Purple", style=discord.ButtonStyle.gray, emoji="🟣", row = 1, custom_id = "Purple"))
-    #     view.add_item(my_color(label = "Yellow", style=discord.ButtonStyle.gray, emoji="🟡", row = 1, custom_id = "Yellow"))
-    #     view.add_item(my_color(label = "Red", style=discord.ButtonStyle.gray, emoji="🔴", row = 2, custom_id = "Red"))
-    #     view.add_item(my_color(label = "Blue", style=discord.ButtonStyle.gray, emoji="🔵", row = 2, custom_id = "Blue"))
-    #     view.add_item(my_color(label = "Teal", style=discord.ButtonStyle.gray, emoji="💠", row = 2, custom_id = "Teal"))
-    #     view.add_item(my_color(label = "Pink", style=discord.ButtonStyle.gray, emoji="💗", row = 2, custom_id = "Pink"))
-    #     await ctx.send("hello", view=view)
+    @commands.command(name="colors", brief="Gives you a menu to choose your roles.")
+    async def colors(self, ctx):
+        class colorView(discord.ui.View):
+                @discord.ui.button(label = "Green", style=discord.ButtonStyle.gray, emoji="🟢", row = 1, custom_id = "Green")
+                async def green(self, button: discord.ui.Button, interaction: discord.Interaction):
+                    await interaction.response.send_message("Your color is now green!", ephemeral=True)
+                @discord.ui.button(label = "Orange", style=discord.ButtonStyle.gray, emoji="🟠", row = 1, custom_id = "Orange")
+                async def orange(self, button: discord.ui.Button, interaction: discord.Interaction):
+                    await interaction.response.send_message("Your color is now orange!", ephemeral=True)
+                @discord.ui.button(label = "Purple", style=discord.ButtonStyle.gray, emoji="🟣", row = 1, custom_id = "Purple")
+                async def purple(self, button: discord.ui.Button, interaction: discord.Interaction):
+                    await interaction.response.send_message("Your color is now purple!", ephemeral=True)
+                @discord.ui.button(label = "Yellow", style=discord.ButtonStyle.gray, emoji="🟡", row = 1, custom_id = "Yellow")
+                async def yellow(self, button: discord.ui.Button, interaction: discord.Interaction):
+                    await interaction.response.send_message("Your color is now yellow!", ephemeral=True)
+                @discord.ui.button(label = "Red", style=discord.ButtonStyle.gray, emoji="🔴", row = 2, custom_id = "Red")
+                async def red(self, button: discord.ui.Button, interaction: discord.Interaction):
+                    await interaction.response.send_message("Your color is now red!", ephemeral=True)
+                @discord.ui.button(label = "Blue", style=discord.ButtonStyle.gray, emoji="🔵", row = 2, custom_id = "Blue")
+                async def blue(self, button: discord.ui.Button, interaction: discord.Interaction):
+                    await interaction.response.send_message("Your color is now blue!", ephemeral=True)
+                @discord.ui.button(label = "Teal", style=discord.ButtonStyle.gray, emoji="💠", row = 2, custom_id = "Teal")
+                async def teal(self, button: discord.ui.Button, interaction: discord.Interaction):
+                    await interaction.response.send_message("Your color is now teal!", ephemeral=True)
+                @discord.ui.button(label = "Pink", style=discord.ButtonStyle.gray, emoji="💗", row = 2, custom_id = "Pink")
+                async def pink(self, button: discord.ui.Button, interaction: discord.Interaction):
+                    await interaction.response.send_message("Your color is now pink!", ephemeral=True)
+                    
+        await ctx.send("hello", view=colorView())
 
 
 
