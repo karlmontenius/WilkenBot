@@ -175,7 +175,13 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
     @commands.command(name="intmenu", brief="Sends a menu to choose your interests in #get-your-roles.")
     @commands.has_any_role("admin")
     async def intmenu(self, ctx):
-        await Roles.interests(self, ctx)     
+        await Roles.interests(self, ctx)
+
+
+    #---------GAMES-------------------------------------------------------------------
+
+
+         
 
 async def setup(bot):
     await bot.add_cog(Commands(bot))
