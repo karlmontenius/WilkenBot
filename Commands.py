@@ -164,14 +164,13 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
     async def gamesmenu(self, ctx):
         await Roles.games(self, ctx)
 
-
     #-----------------COLORS----------------------------------------------------------------------------------------------------------
     @commands.command(name="colorsmenu", brief="Sends a menu to choose colors in #colors.")
     @commands.has_any_role("admin")
     async def colorsmenu(self, ctx):
         await Roles.colors(self, ctx) 
 
-    #---------GAMES-------------------------------------------------------------------
+    #---------INTERESTS-------------------------------------------------------------------
     @commands.command(name="intmenu", brief="Sends a menu to choose your interests in #get-your-roles.")
     @commands.has_any_role("admin")
     async def intmenu(self, ctx):

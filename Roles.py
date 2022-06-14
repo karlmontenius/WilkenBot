@@ -270,14 +270,9 @@ class Roles(commands.Cog, description="Supportive cog for roles."):
                     await user.add_roles(Techie)
                     await interaction.response.send_message("Added Techie!", ephemeral=True)
 
-        msg = []
-        counter = 0
-        async for messages in channel.history(limit = 100):
-            msg.append(messages)
-            counter += 1
-            await messages.delete()
+
         message = await channel.send(content="Choose your interests!",view=my_interests())
-        await asyncio.sleep(180)
+        await asyncio.sleep(185)
         await Roles.interests(self,ctx)
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------
