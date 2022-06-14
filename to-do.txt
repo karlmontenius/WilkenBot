@@ -12,3 +12,5 @@ SteamAPI to get library
 Games
 
 Interests
+
+Voting command
