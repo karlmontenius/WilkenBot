@@ -158,14 +158,9 @@ class Roles(commands.Cog, description="Supportive cog for roles."):
                     await user.add_roles(Battlefield)
                     await interaction.response.send_message("Added Battlefield!", ephemeral=True)
 
-        msg = []
-        counter = 0
-        async for messages in channel.history(limit = 100):
-            msg.append(messages)
-            counter += 1
-            await messages.delete()
-        await channel.send(content="Choose which games you play!",view=my_games())
+        message = await channel.send(content="Choose which games you play!",view=my_games())
         await asyncio.sleep(180)
+        await message.delete()
         await Roles.games(self,ctx)
         
 
@@ -270,9 +265,9 @@ class Roles(commands.Cog, description="Supportive cog for roles."):
                     await user.add_roles(Techie)
                     await interaction.response.send_message("Added Techie!", ephemeral=True)
 
-
         message = await channel.send(content="Choose your interests!",view=my_interests())
-        await asyncio.sleep(185)
+        await asyncio.sleep(180)
+        await message.delete()
         await Roles.interests(self,ctx)
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------
@@ -376,14 +371,9 @@ class Roles(commands.Cog, description="Supportive cog for roles."):
                         await user.add_roles(Pink)
                         await interaction.response.send_message("Your color is now pink!", ephemeral=True)
         
-        msg = []
-        counter = 0
-        async for messages in channel.history(limit = 100):
-            msg.append(messages)
-            counter += 1
-            await messages.delete()
-        await channel.send(content="Choose the color of your name!\nClick the button again to remove the color.",view=colorView())
+        message = await channel.send(content="Choose the color of your name!\nClick the button again to remove the color.",view=colorView())
         await asyncio.sleep(180)
+        await message.delete()
         await Roles.colors(self,ctx)
         
 async def setup(bot):

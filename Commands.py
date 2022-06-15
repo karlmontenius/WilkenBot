@@ -177,7 +177,7 @@ class Commands(commands.Cog, description="General commands, such as !slap, and !
         await Roles.interests(self, ctx)
 
 
-    #---------GAMES-------------------------------------------------------------------
+    #---------VOTING-------------------------------------------------------------------
 
 
          
