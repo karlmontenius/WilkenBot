@@ -23,6 +23,6 @@ async def loader():
 
 async def main():
     await loader()
-    await bot.start('ODU5MDk2NjE1MDYzMjU3MDk4.GvE1V4.Wb7eN5dGgXD10lyOC8lgRnTeg6r-SvS9LeeBio')
+    await bot.start('BOT_TOKEN')
 
 asyncio.run(main())
