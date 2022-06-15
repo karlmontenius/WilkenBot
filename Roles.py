@@ -172,7 +172,7 @@ class Roles(commands.Cog, description="Supportive cog for roles."):
         Techie = get(ctx.guild.roles, name="Techie")
         channel = get(ctx.guild.text_channels, name="get-your-roles")
 
-        class my_interests(discord.ui.View(timeout=None)):
+        class my_interests(discord.ui.View):
             @discord.ui.button(label = "DnD", style=discord.ButtonStyle.gray, custom_id = "DnD")
             async def DnD(self, interaction: discord.Interaction, button: discord.ui.Button):
                 user = interaction.user
@@ -267,7 +267,7 @@ class Roles(commands.Cog, description="Supportive cog for roles."):
     async def colors(self, ctx):
         channel = get(ctx.guild.text_channels, name="colors")
 
-        class colorView(discord.ui.View(timeout=None)):
+        class colorView(discord.ui.View):
                 @discord.ui.button(label = "Green", style=discord.ButtonStyle.gray, emoji="🟢", row = 1, custom_id = "Green")
                 async def green(self, interaction: discord.Interaction, button: discord.ui.Button):
                     user = interaction.user
