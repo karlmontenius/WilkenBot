@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 from discord.utils import get
-import asyncio
 
 class Roles(commands.Cog, description="Supportive cog for roles."):
     def __init__(self, bot):
@@ -158,10 +157,7 @@ class Roles(commands.Cog, description="Supportive cog for roles."):
                     await user.add_roles(Battlefield)
                     await interaction.response.send_message("Added Battlefield!", ephemeral=True)
 
-        message = await channel.send(content="Choose which games you play!",view=my_games())
-        await asyncio.sleep(180)
-        await message.delete()
-        await Roles.games(self,ctx)
+        await channel.send(content="Choose which games you play!",view=my_games(timeout=None))
         
 
 #---------------------------------------------------------------------------------------------------------------------------
@@ -176,7 +172,7 @@ class Roles(commands.Cog, description="Supportive cog for roles."):
         Techie = get(ctx.guild.roles, name="Techie")
         channel = get(ctx.guild.text_channels, name="get-your-roles")
 
-        class my_interests(discord.ui.View):
+        class my_interests(discord.ui.View(timeout=None)):
             @discord.ui.button(label = "DnD", style=discord.ButtonStyle.gray, custom_id = "DnD")
             async def DnD(self, interaction: discord.Interaction, button: discord.ui.Button):
                 user = interaction.user
@@ -265,16 +261,13 @@ class Roles(commands.Cog, description="Supportive cog for roles."):
                     await user.add_roles(Techie)
                     await interaction.response.send_message("Added Techie!", ephemeral=True)
 
-        message = await channel.send(content="Choose your interests!",view=my_interests())
-        await asyncio.sleep(180)
-        await message.delete()
-        await Roles.interests(self,ctx)
+        await channel.send(content="Choose your interests!",view=my_interests(timeout=None))
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------
     async def colors(self, ctx):
         channel = get(ctx.guild.text_channels, name="colors")
 
-        class colorView(discord.ui.View):
+        class colorView(discord.ui.View(timeout=None)):
                 @discord.ui.button(label = "Green", style=discord.ButtonStyle.gray, emoji="🟢", row = 1, custom_id = "Green")
                 async def green(self, interaction: discord.Interaction, button: discord.ui.Button):
                     user = interaction.user
@@ -371,10 +364,7 @@ class Roles(commands.Cog, description="Supportive cog for roles."):
                         await user.add_roles(Pink)
                         await interaction.response.send_message("Your color is now pink!", ephemeral=True)
         
-        message = await channel.send(content="Choose the color of your name!\nClick the button again to remove the color.",view=colorView())
-        await asyncio.sleep(180)
-        await message.delete()
-        await Roles.colors(self,ctx)
+        await channel.send(content="Choose the color of your name!\nClick the button again to remove the color.",view=colorView(timeout=None))
         
 async def setup(bot):
     await bot.add_cog(Roles(bot))
